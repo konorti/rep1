@@ -21,7 +21,16 @@ public class LoginPage extends PageObject{
 	}
 	
 	//Actions
+	public UserPage loginWithDefaultUser() {
+		waitForVisible(userNameField).sendKeys(user);
+		passwordField.sendKeys(pass);
+		submitButton.submit();
+		return new UserPage();	
+	}
+	
 	public UserPage login(String userName, String password) {
+		user = userName;
+		pass = password;
 		waitForVisible(userNameField).sendKeys(userName);
 		passwordField.sendKeys(password);
 		submitButton.submit();

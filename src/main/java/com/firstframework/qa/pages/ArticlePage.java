@@ -24,8 +24,12 @@ public class ArticlePage extends PageObject {
 	@FindBy(css = ".field--name-field-tags .field__item")
 	List<WebElement> tagsList;
 	
-	@FindBy
-
+	@FindBy( css = ".field--name-field-image img")
+	WebElement image;
+	
+	@FindBy( linkText = "Edit")
+	WebElement editButton;
+	
 	private String articleTitle;
 
 	public ArticlePage(String title) {
@@ -47,6 +51,14 @@ public class ArticlePage extends PageObject {
 		return new DeleteConfirmationPage("Are you sure you want to delete the content " + articleTitle + "?");
 	}
 
+	public boolean checkTitle(String title) {
+		return getTitle().contains(title);
+	}
+	
+	public boolean checkContent(String title) {
+		return getContent().contains(title);
+	}
+	
 	public boolean checkTags(String tags) {
 		String[] tagsArray = tags.split(",");
 		waitForVisible(tagsArea);
@@ -55,5 +67,18 @@ public class ArticlePage extends PageObject {
 				return false;
 		}
 		return true;
+	}
+	
+	public boolean checkImage(String altText) {
+		if( !altText.isEmpty() ) {
+			if (!waitForVisible(image).isDisplayed())
+				return false;
+		}
+		return image.getAttribute("alt").contains(altText);
+	}
+	
+	public EditArticle editContent() {
+		waitForClick(editButton).click();
+		return new EditArticle();
 	}
 }

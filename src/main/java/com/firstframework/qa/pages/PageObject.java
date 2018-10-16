@@ -1,8 +1,6 @@
 package com.firstframework.qa.pages;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import org.openqa.selenium.TimeoutException;
@@ -16,9 +14,11 @@ import org.testng.Assert;
 
 public abstract class PageObject {
 	protected static WebDriver driver = null;
-	private static String APP_URL;
-	private static String DRIVER_URL;
-	private static BrowserType BROWSER_TYPE;
+	private static String appUrl;
+	public static String user;
+	public static String pass;
+	private static String driverUrl;
+	private static BrowserType browserType;
 
 	private enum BrowserType {
 		IE, CHROME, FIREFOX
@@ -30,21 +30,23 @@ public abstract class PageObject {
 			Properties configProperties = new Properties();
 			try {
 				configProperties.load(PageObject.class.getResourceAsStream("/config.properties"));
-				APP_URL = configProperties.getProperty("APP_URL");
-				DRIVER_URL = configProperties.getProperty("DRIVER_URL");
-				BROWSER_TYPE = BrowserType.valueOf(configProperties.getProperty("BROWSER_TYPE"));
+				appUrl = configProperties.getProperty("APP_URL");
+				user = configProperties.getProperty("DEFAULT_USER");
+				pass = configProperties.getProperty("DEFAULT_PASS");
+				driverUrl = configProperties.getProperty("DRIVER_URL");
+				browserType = BrowserType.valueOf(configProperties.getProperty("BROWSER_TYPE"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			switch (BROWSER_TYPE) {
+			switch (browserType) {
 			case IE:
 				break;
 			case CHROME:
-				System.setProperty("webdriver.chrome.driver", DRIVER_URL);
+				System.setProperty("webdriver.chrome.driver", driverUrl);
 				driver = new ChromeDriver();
 				break;
 			case FIREFOX:
-				System.setProperty("webdriver.gecko.driver", DRIVER_URL);
+				System.setProperty("webdriver.gecko.driver", driverUrl);
 				driver = new FirefoxDriver();
 				break;
 			}
@@ -53,7 +55,7 @@ public abstract class PageObject {
 
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-		driver.get(APP_URL);
+		driver.get(appUrl);
 
 	}
 
