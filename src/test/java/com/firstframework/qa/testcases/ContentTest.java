@@ -29,7 +29,7 @@ public class ContentTest extends PageObject {
 		// PageObject.closeBrowser();
 	}
 
-	
+	@Test
 	public void addNewContent() {
 		HomePage homePage = new HomePage();
 		LoginPage loginPage = homePage.goToLogin();
@@ -80,6 +80,19 @@ public class ContentTest extends PageObject {
 		editArticle.uploadImage(
 				"C:\\eclipse-workspace\\MyFirstTestFramework\\src\\test\\resources\\Pizza.jpg",
 				"This is a picture about a pizza");
-		editArticle.save();
+		articlePage = editArticle.save();
+		
+		Assert.assertTrue(articlePage.checkTitle("Edited title"), 
+				"Article's title is not correct");
+		Assert.assertTrue(articlePage.checkContent("Edited body"),
+				"Article's content is not correct");
+		Assert.assertTrue(articlePage.checkTags("edited tag1, edited tag2"), 
+				"Article's tags are not correct");
+		Assert.assertTrue(articlePage.checkImage("This is a picture about a pizza"), 
+				"Article's image is not correct");
+		DeleteConfirmationPage deleteConfirmationPage = articlePage.delete();
+		homePage = deleteConfirmationPage.delete();
+		Assert.assertTrue(homePage.getMessages().contains("Edited title" + " has been deleted"), 
+				"Delete success message did not appear correctly"); 
 	}
 }
