@@ -4,12 +4,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class DeleteConfirmationPage extends PageObject{
+public class DeleteConfPageFromArticlePage extends PageObject{
 
 	@FindBy(id = "edit-submit")
 	WebElement deleteButton;
 	
-	public DeleteConfirmationPage(String title) {
+	public DeleteConfPageFromArticlePage(String title) {
 		waitForPage(title, "DeleteConfrimationPage did not load correctly: " + title);
 		PageFactory.initElements(driver, this);
 	}

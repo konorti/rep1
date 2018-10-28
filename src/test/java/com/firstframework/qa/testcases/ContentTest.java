@@ -9,7 +9,8 @@ import com.firstframework.qa.pages.AddContentPage;
 import com.firstframework.qa.pages.ArticlePage;
 import com.firstframework.qa.pages.ContentPage;
 import com.firstframework.qa.pages.CreateArticle;
-import com.firstframework.qa.pages.DeleteConfirmationPage;
+import com.firstframework.qa.pages.DeleteConfPageFromArticlePage;
+import com.firstframework.qa.pages.DeleteConfPageFromContentPage;
 import com.firstframework.qa.pages.EditArticle;
 import com.firstframework.qa.pages.HomePage;
 import com.firstframework.qa.pages.LoginPage;
@@ -52,7 +53,7 @@ public class ContentTest extends PageObject {
 				"Article's tags are not correct");
 		Assert.assertTrue(articlePage.checkImage("This is a picture about a hamburger"), 
 				"Article's image is not correct");
-		DeleteConfirmationPage deleteConfirmationPage = articlePage.delete();
+		DeleteConfPageFromArticlePage deleteConfirmationPage = articlePage.delete();
 		homePage = deleteConfirmationPage.delete();
 		Assert.assertTrue(homePage.getMessages().contains("This is a new title" + " has been deleted"), 
 				"Delete success message did not appear correctly"); 
@@ -90,9 +91,28 @@ public class ContentTest extends PageObject {
 				"Article's tags are not correct");
 		Assert.assertTrue(articlePage.checkImage("This is a picture about a pizza"), 
 				"Article's image is not correct");
-		DeleteConfirmationPage deleteConfirmationPage = articlePage.delete();
+		DeleteConfPageFromArticlePage deleteConfirmationPage = articlePage.delete();
 		homePage = deleteConfirmationPage.delete();
 		Assert.assertTrue(homePage.getMessages().contains("Edited title" + " has been deleted"), 
+				"Delete success message did not appear correctly"); 
+	}
+	
+	@Test
+	public void deleteContent() {
+		Assert.assertTrue(UseCases.createArticle("Test title", "This is a cool text", 
+						"állatos,new,trending",
+						"C:\\eclipse-workspace\\MyFirstTestFramework\\src\\test\\resources\\Hamburger.jpg",
+						"This is a picture about a hamburger"),
+				"Test data preparation: create article failed");
+		PageObject.startBrowser();
+		HomePage homePage = new HomePage();
+		LoginPage loginPage = homePage.goToLogin();
+		UserPage userPage = loginPage.loginWithDefaultUser();
+		ContentPage contentPage = userPage.getAdminMenu().goToContent();
+		contentPage.filterContents("Test title");
+		DeleteConfPageFromContentPage deleteConfirmationPage = contentPage.deleteContent("Test title");
+		contentPage = deleteConfirmationPage.delete();
+		Assert.assertTrue(contentPage.getMessages().contains("Deleted 1 content item."), 
 				"Delete success message did not appear correctly"); 
 	}
 }

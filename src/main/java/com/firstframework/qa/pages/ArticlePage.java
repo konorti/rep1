@@ -46,9 +46,9 @@ public class ArticlePage extends PageObject {
 		return waitForVisible(title).getText();
 	}
 
-	public DeleteConfirmationPage delete() {
+	public DeleteConfPageFromArticlePage delete() {
 		waitForClick(deleteButton).click();
-		return new DeleteConfirmationPage("Are you sure you want to delete the content " + articleTitle + "?");
+		return new DeleteConfPageFromArticlePage("Are you sure you want to delete the content " + articleTitle + "?");
 	}
 
 	public boolean checkTitle(String title) {

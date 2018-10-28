@@ -4,7 +4,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import com.firstframework.qa.pageelements.AdminMenu;
 
 public class HomePage extends PageObject{
@@ -17,7 +16,6 @@ public class HomePage extends PageObject{
 	
 	@FindBy(css = ".messages__item")
 	WebElement messages;
-	
 	//Initialization
 	public HomePage() {
 		waitForPage("Home", "HomePage did not load correctly");
